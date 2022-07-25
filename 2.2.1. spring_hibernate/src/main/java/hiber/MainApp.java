@@ -1,6 +1,7 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,15 +11,20 @@ import java.util.List;
 
 public class MainApp {
    public static void main(String[] args) throws SQLException {
-      AnnotationConfigApplicationContext context = 
-            new AnnotationConfigApplicationContext(AppConfig.class);
+      AnnotationConfigApplicationContext context =
+              new AnnotationConfigApplicationContext(AppConfig.class);
 
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+      Car car1 = new Car("Mazda",123456);
+      Car car2 = new Car("Honda",123456);
+      Car car3 = new Car("Subaru",123456);
+      Car car4 = new Car("Toyota",123456);
+
+      userService.add(new User("Van", "Darkholme", "user1@mail.ru",car1));
+      userService.add(new User("Billy", "Harrington", "user2@mail.ru",car2));
+      userService.add(new User("Vitaly", "Milonov", "user3@mail.ru",car3));
+      userService.add(new User("Oleg", "Gazmanov", "user4@mail.ru",car4));
 
       List<User> users = userService.listUsers();
       for (User user : users) {
@@ -26,8 +32,11 @@ public class MainApp {
          System.out.println("First Name = "+user.getFirstName());
          System.out.println("Last Name = "+user.getLastName());
          System.out.println("Email = "+user.getEmail());
-         System.out.println();
+         System.out.println(user.getCar());
+         System.out.println("------------------------------------");
       }
+      System.out.println(userService.getUser("Model1",123456));
+      System.out.println("-------------------------------------------");
 
       context.close();
    }
